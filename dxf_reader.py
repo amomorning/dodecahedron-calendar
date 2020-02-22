@@ -1,22 +1,13 @@
 import ezdxf
 
-# Create a new DXF document.
-doc = ezdxf.new(dxfversion='R2010')
-
-# Create new table entries (layers, linetypes, text styles, ...).
-doc.layers.new('TEXTLAYER', dxfattribs={'color': 2})
-
-# DXF entities (LINE, TEXT, ...) reside in a layout (modelspace, 
-# paperspace layout or block definition).  
+doc = ezdxf.readfile("template.dxf")
 msp = doc.modelspace()
 
-# Add entities to a layout by factory methods: layout.add_...() 
-msp.add_line((0, 0), (10, 0), dxfattribs={'color': 7})
-msp.add_text(
-    'Test', 
-    dxfattribs={
-        'layer': 'TEXTLAYER'
-    }).set_pos((0, 0.2), align='CENTER')
+inner_up = msp.query('POLYLINE[layer=="inner_up"]') 
+inner_down = msp.query('POLYLINE[layer=="inner_down"]')  
+dot = msp.query('POLYLINE[layer=="dot"]')  
+outer = msp.query('POLYLINE[layer=="outer"]')
 
-# Save DXF document.
-doc.saveas('test.dxf')
+
+for v in outer[0]:
+    print(v.dxf.location)
