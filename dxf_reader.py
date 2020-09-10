@@ -10,6 +10,7 @@ inner_down = msp.query('POLYLINE[layer=="inner_down"]')
 dot = msp.query('POLYLINE[layer=="dot"]')  
 outer = msp.query('POLYLINE[layer=="outer"]')
 
+f = plt.figure(figsize=(12, 9))
 for o in outer:
     for i in range(len(o)-1):
         u = o[i].dxf.location[0:2] 
@@ -22,4 +23,6 @@ for o in dot:
     print(u, v)
     plt.plot([u[0], v[0]], [u[1], v[1]], 'k--')
 
+plt.axis('off')
 plt.show()
+f.savefig("foo.pdf", bbox_inches='tight')
