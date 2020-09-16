@@ -11,6 +11,7 @@
       ></v-date-picker>
     </v-col>
     <v-col cols="6" sm="3">
+      <v-row>
       <v-menu
         ref="menu"
         v-model="menu"
@@ -28,7 +29,7 @@
             chips
             small-chips
             label="Multiple picker in menu"
-            prepend-icon="event"
+            prepend-icon="mdi-calendar-blank"
             readonly
             v-bind="attrs"
             v-on="on"
@@ -41,13 +42,14 @@
           <v-btn text color="black" @click="$refs.menu.save(dates)">OK</v-btn>
         </v-date-picker>
       </v-menu>
+      </v-row>
     </v-col>
   </v-row>
 </template>
 <script>
   export default {
     data: () => ({
-      dates: ['2018-09-15', '2018-09-20'],
+      dates: [new Date().getFullYear() +'-01-01'],
       menu: false,
     }),
   }
