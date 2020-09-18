@@ -14,6 +14,7 @@ def dxf_init():
     inner_down = msp.query('POLYLINE[layer=="inner_down"]')  
     dot = msp.query('POLYLINE[layer=="dot"]')  
     outer = msp.query('POLYLINE[layer=="outer"]')
+    
 
     return inner_up, inner_down, dot, outer
 
