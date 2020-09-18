@@ -39,17 +39,14 @@
   class="ma-10">
       <DatePicker ref="dates"/>
 
-      <v-row class="pl-7 pr-5">
-        <h3>Display</h3>
-      </v-row>
-      <v-row class="px-7"> 
-        <v-radio-group class="horizontal" ref="mainstyle">
-          <v-radio label="Filled" value="Filled"></v-radio>
-          <v-radio label="Doubled" value="Doubled"></v-radio>
-          <v-radio label="Filpped" value="Filpped"></v-radio>
-        </v-radio-group>
-      </v-row>
-
+      <vue-select-image
+  :dataImages="dataImages"
+  h='90px'
+  w='90px'
+  @onselectimage="onSelectImage"
+  ref='mainstyle'
+  >
+</vue-select-image>
       <ColorPicker initialColor="#E1ECF4" ref="maincolor"> </ColorPicker>
       <ColorPicker initialColor="#E45C18" ref="percolor"> </ColorPicker>
 
@@ -76,24 +73,45 @@
 <script>
 import DatePicker from './components/DatePicker';
 import ColorPicker from './components/ColorPicker'
-
+import VueSelectImage from 'vue-select-image'
+// add stylesheet
+require('vue-select-image/dist/vue-select-image.css')
 export default {
   name: 'App',
 
   components: {
     DatePicker,
     ColorPicker,
+    VueSelectImage 
   },
 
   data: () => ({
-    //
+    dataImages:[{
+  id: '1',
+  src: '/img/filled.png',
+  alt: 'filled'
+}, {
+  id: '2',
+  src: '/img/doubled.png',
+  alt: 'doubled'
+}, {
+  id: '3',
+  src: '/img/flipped.png',
+  alt: 'flipped'
+}]
+
   }),
   methods: {
+    onSelectImage: function (data) {
+      this.imageSelected = data
+    },
     collectData : function() {
-      console.log(this.$refs.dates.dates);
+      console.log(this.$refs.dates.dates.slice(0,));
       console.log(this.$refs.maincolor.color);
       console.log(this.$refs.percolor.color);
-      console.log(this.$refs.mainstyle);
+      var select =this.imageSelected;
+      if(typeof(select) != 'undefined')
+        console.log(select.alt);
 
     }
   },
