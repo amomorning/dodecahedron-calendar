@@ -1,17 +1,17 @@
 <template>
-  <v-row
-    absolute
-  >
-    <v-col cols="6" sm="3" offset="1">
+<v-row>
+    <v-col 
+      class="pl-5">
       <v-date-picker
         v-model="dates"
         multiple
-        landscape
         color="black"
       ></v-date-picker>
     </v-col>
-    <v-col cols="6" sm="3">
-      <v-row>
+  <v-col 
+        class="px-10"
+  >
+    <v-row >
       <v-menu
         ref="menu"
         v-model="menu"
@@ -19,8 +19,7 @@
         :return-value.sync="dates"
         transition="scale-transition"
         offset-y
-        min-width="290px"
-        color="black"
+        min-width="280px"
       >
         <template v-slot:activator="{ on, attrs }">
           <v-combobox
@@ -43,14 +42,16 @@
         </v-date-picker>
       </v-menu>
       </v-row>
+
     </v-col>
-  </v-row>
+</v-row> 
 </template>
 <script>
   export default {
     data: () => ({
-      dates: [new Date().getFullYear() +'-01-01'],
+      dates: [new Date().getFullYear() +'-09-01'],
       menu: false,
     }),
+
   }
 </script>
