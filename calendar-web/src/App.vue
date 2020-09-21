@@ -31,6 +31,7 @@
           w="90px"
           @onselectimage="onSelectImage"
           ref="mainstyle"
+          color="#EEEEEE"
         ></vue-select-image>
         <ColorPicker initialColor="#E1ECF4" ref="maincolor"></ColorPicker>
         <ColorPicker initialColor="#E45C18" ref="percolor"></ColorPicker>
@@ -94,6 +95,21 @@ export default {
       console.log(this.$refs.percolor.color);
       var select = this.imageSelected;
       if (typeof select != "undefined") console.log(select.alt);
+
+      var xhr = new XMLHttpRequest();
+      var url = "http://127.0.0.1:8888/hello";
+      xhr.open("POST", url, true);
+      xhr.setRequestHeader("Content-Type", "application/json");
+      xhr.withCredentials = true;
+
+      xhr.onreadystatechange = function () {
+          if (xhr.readyState === 4 && xhr.status === 200) {
+              var json = JSON.parse(xhr.responseText);
+              console.log(json.email + ", " + json.password);
+          }
+      };
+      var data = JSON.stringify({"email": "hey@mail.com", "password": "101010"});
+      xhr.send(data);
     },
   },
   mounted() {
