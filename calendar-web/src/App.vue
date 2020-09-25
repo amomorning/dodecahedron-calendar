@@ -55,6 +55,7 @@
 import DatePicker from "./components/DatePicker";
 import ColorPicker from "./components/ColorPicker";
 import VueSelectImage from "vue-select-image";
+import socket from "./socket"
 // add stylesheet
 require("vue-select-image/dist/vue-select-image.css");
 export default {
@@ -96,24 +97,16 @@ export default {
       var select = this.imageSelected;
       if (typeof select != "undefined") console.log(select.alt);
 
-      var xhr = new XMLHttpRequest();
-      var url = "http://127.0.0.1:8888/hello";
-      xhr.open("POST", url, true);
-      xhr.setRequestHeader("Content-Type", "application/json");
-      xhr.withCredentials = true;
+      socket.emit("exchangeParams", "hello");
 
-      xhr.onreadystatechange = function () {
-          if (xhr.readyState === 4 && xhr.status === 200) {
-              var json = JSON.parse(xhr.responseText);
-              console.log(json.email + ", " + json.password);
-          }
-      };
-      var data = JSON.stringify({"email": "hey@mail.com", "password": "101010"});
-      xhr.send(data);
+      
     },
   },
   mounted() {
     console.log(DatePicker.data().dates);
+    socket.on("receiveData",  async function(message) {
+      console.log(message)
+    });
   },
 };
 </script>

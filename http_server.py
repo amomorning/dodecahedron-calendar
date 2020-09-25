@@ -1,11 +1,23 @@
-from flask import Flask
+import eventlet
+import socketio
 
-app = Flask(__name__)
+sio = socketio.Server(cors_allowed_origins='*')
+app = socketio.WSGIApp(sio, static_files={
+    '/': {'content_type': 'text/html', 'filename': 'index.html'}
+})
 
-@app.route('/hello', methods=['POST'])
-def hello():
-    print('Hello')
-    return "Hello, World!"
+
+@sio.event
+def connect(sid, environ):
+    print('connect ', sid)
+
+@sio.event
+def exchangeParams(sid, data):
+    print('message ', data)
+
+@sio.event
+def disconnect(sid):
+    print('disconnect ', sid)
 
 if __name__ == '__main__':
-    app.run(port=8888, debug=True)
+    eventlet.wsgi.server(eventlet.listen(('', 2608)), app)
