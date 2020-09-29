@@ -1,23 +1,38 @@
-import eventlet
-import socketio
+from flask import Flask, render_template, jsonify, send_file
+from random import *
+from flask_cors import CORS
+import requests
+import gen_calendar
+import time
 
-sio = socketio.Server(cors_allowed_origins='*')
-app = socketio.WSGIApp(sio, static_files={
-    '/': {'content_type': 'text/html', 'filename': 'index.html'}
-})
+app = Flask(__name__, static_folder="./dist/static", template_folder="./dist")
+cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
 
 
-@sio.event
-def connect(sid, environ):
-    print('connect ', sid)
+@app.route('/api/random')
+def random_number():
+    response = {'randomNumber': randint(1, 100)}
+    return jsonify(response)
 
-@sio.event
-def exchangeParams(sid, data):
-    print('message ', data)
 
-@sio.event
-def disconnect(sid):
-    print('disconnect ', sid)
+@app.route('/api/user_calendar')
+def user_calendar():
+    try:
+        gen_calendar.cnt = 1
+        gen_calendar.year = 2020
+        gen_calendar.gen_calendar()
+        return send_file('./tmp.pdf', as_attachment=True, cache_timeout=0)
+    except Exception as e:
+        return str(e)
+
+
+@app.route('/', defaults={'path': ''})
+@app.route('/<path:path>')
+def catch_all(path):
+    if app.debug:
+        return requests.get('http://localhost:8080/{}'.format(path)).text
+    return render_template("index.html")
+
 
 if __name__ == '__main__':
-    eventlet.wsgi.server(eventlet.listen(('', 2608)), app)
+    app.run(debug=True)

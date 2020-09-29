@@ -15,14 +15,24 @@
 
       <v-spacer></v-spacer>
 
-      <v-btn href="https://github.com/amomorning/dodecahedron-calendar" target="_blank" text>
+      <v-btn
+        href="https://github.com/amomorning/dodecahedron-calendar"
+        target="_blank"
+        text
+      >
         <span class="mr-2">Github</span>
         <v-icon>mdi-open-in-new</v-icon>
       </v-btn>
     </v-app-bar>
 
     <v-main>
-      <v-card width="360" align="center" justify="center" elevation="0" class="ma-10">
+      <v-card
+        width="360"
+        align="center"
+        justify="center"
+        elevation="0"
+        class="ma-10"
+      >
         <DatePicker ref="dates" />
 
         <vue-select-image
@@ -55,7 +65,8 @@
 import DatePicker from "./components/DatePicker";
 import ColorPicker from "./components/ColorPicker";
 import VueSelectImage from "vue-select-image";
-import socket from "./socket"
+import axios from "axios";
+// import socket from "./socket"
 // add stylesheet
 require("vue-select-image/dist/vue-select-image.css");
 export default {
@@ -97,16 +108,32 @@ export default {
       var select = this.imageSelected;
       if (typeof select != "undefined") console.log(select.alt);
 
-      socket.emit("exchangeParams", "hello");
+      // socket.emit("exchangeParams", "hello");
 
-      
+      const path = `http://localhost:5000/api/user_calendar`;
+      axios
+        .get(path, {
+          responseType: "blob" //重要
+        })
+        .then((response) => {
+          const url = window.URL.createObjectURL(new Blob([response.data]));
+          const link = document.createElement("a");
+          // let head = response.headers['content-disposition'];
+          let fname = Date.now().toString() + ".pdf";
+          link.href = url;
+          link.setAttribute("download", fname);
+          document.body.appendChild(link);
+          link.click();
+
+          document.body.removeChild(link);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     },
   },
   mounted() {
     console.log(DatePicker.data().dates);
-    socket.on("receiveData",  async function(message) {
-      console.log(message)
-    });
   },
 };
 </script>
