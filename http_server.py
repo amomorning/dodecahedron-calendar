@@ -5,7 +5,7 @@ import requests
 import gen_calendar
 import time
 
-app = Flask(__name__, static_folder="./dist/static", template_folder="./dist")
+app = Flask(__name__, static_folder="calendar-web\dist", template_folder="calendar-web\dist")
 cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
 
 
@@ -15,7 +15,7 @@ def random_number():
     return jsonify(response)
 
 
-@app.route('/api/user_calendar')
+@app.route('/api/calendar')
 def user_calendar():
     try:
         gen_calendar.cnt = 1
@@ -29,8 +29,10 @@ def user_calendar():
 @app.route('/', defaults={'path': ''})
 @app.route('/<path:path>')
 def catch_all(path):
-    if app.debug:
+    if(app.debug):
         return requests.get('http://localhost:8080/{}'.format(path)).text
+    if(len(path) > 0):
+        return app.send_static_file(path)
     return render_template("index.html")
 
 

@@ -110,7 +110,7 @@ export default {
 
       // socket.emit("exchangeParams", "hello");
 
-      const path = `http://localhost:5000/api/user_calendar`;
+      const path = `http://localhost:5000/api/calendar`;
       axios
         .get(path, {
           responseType: "blob" //重要
