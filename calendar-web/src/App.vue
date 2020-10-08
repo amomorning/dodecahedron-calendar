@@ -43,8 +43,9 @@
           ref="mainstyle"
           color="#EEEEEE"
         ></vue-select-image>
-        <ColorPicker initialColor="#E1ECF4" ref="maincolor"></ColorPicker>
+        <ColorPicker initialColor="#C7D3DD" ref="maincolor"></ColorPicker>
         <ColorPicker initialColor="#E45C18" ref="percolor"></ColorPicker>
+        <ColorPicker initialColor="#EDF1F4" ref="backcolor"></ColorPicker>
 
         <v-row justify="center" class="ma-4">
           <v-btn dark @click="collectData">Update</v-btn>
@@ -66,6 +67,7 @@ import DatePicker from "./components/DatePicker";
 import ColorPicker from "./components/ColorPicker";
 import VueSelectImage from "vue-select-image";
 import axios from "axios";
+var _ = require('lodash');
 // import socket from "./socket"
 // add stylesheet
 require("vue-select-image/dist/vue-select-image.css");
@@ -102,15 +104,41 @@ export default {
       this.imageSelected = data;
     },
     collectData: function () {
-      console.log(this.$refs.dates.dates.slice(0));
-      console.log(this.$refs.maincolor.color);
-      console.log(this.$refs.percolor.color);
+      const data = {
+        year : new Array(),
+        dates : new Array(),
+        maincolor : new String(),
+        percolor : new String(),
+        backcolor : new String(),
+        select : new String(),
+      }
+
+      const year = new Set();
+      const dates = new Set();
+      this.$refs.dates.dates.forEach(function (date) {
+        let y, m, d;
+        [y, m, d] = _.split(date, '-');
+        console.log(y, m+d);
+        year.add(y)
+        dates.add(m+d)
+      });
+
+      data.year = Array.from(year)
+      data.dates = Array.from(dates)
+
+      data.maincolor = this.$refs.maincolor.color.substr(1);
+      data.percolor = this.$refs.percolor.color.substr(1);
+      data.backcolor = this.$refs.backcolor.color.substr(1);
       var select = this.imageSelected;
-      if (typeof select != "undefined") console.log(select.alt);
+      data.select = typeof select == "undefined" ? "doubled" : select.alt;
+
+      console.log(data)
 
       // socket.emit("exchangeParams", "hello");
-
-      const path = `http://localhost:5000/api/calendar`;
+      let js = JSON.stringify(data);
+      console.log(js)
+      let path = `http://localhost:5000/api/calenda`;
+      path += `?data=${js}`
       axios
         .get(path, {
           responseType: "blob" //重要

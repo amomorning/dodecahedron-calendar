@@ -66,10 +66,12 @@ def plot_calendar(ax, dxf_polys, dx=0, dy=0, ro=0):
 
 
 def gen_calendar(
-    style = 'double',
-    maincolor = '#E1ECF4FF',
-    backcolor='#FFFFFFFF',
-    percolor = '#E45C18FF'):
+    style = 'doubled',
+    maincolor = '#C7D3DD',
+    percolor = '#E45C18', 
+    backcolor='#EDF1F4'):
+    global cnt
+    cnt = 1
     inner_up, inner_down, dot, outer = dxf_init()
     fig = plt.figure(figsize=(24, 18))
     ax = fig.add_subplot(1, 1, 1)
@@ -86,7 +88,7 @@ def gen_calendar(
         plot_polygons(ax, inner_up, 1, maincolor)
         plot_polygons(ax, inner_up, 0.8, backcolor)
         plot_polygons(ax, inner_down, 0.8, maincolor)
-    if (style == 'double'):
+    if (style == 'doubled'):
         plot_polygons(ax, inner_up, 1, maincolor)
         plot_polygons(ax, inner_up, 0.8, backcolor)
         plot_polygons(ax, inner_down, 1, maincolor)
@@ -105,6 +107,5 @@ def gen_calendar(
 
 if  __name__ == '__main__':
     year = 2020
-    cnt = 1
     gen_calendar()
     plt.show()

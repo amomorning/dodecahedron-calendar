@@ -10,6 +10,7 @@
   "dependencies": {
     "axios": "^0.20.0",
     "core-js": "^3.6.5",
+    "lodash": "^4.17.20",
     "node-forge": "^0.10.0",
     "socket.io": "^2.3.0",
     "vue": "^2.6.11",
