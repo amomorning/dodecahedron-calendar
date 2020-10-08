@@ -116,8 +116,7 @@ export default {
       const year = new Set();
       const dates = new Set();
       this.$refs.dates.dates.forEach(function (date) {
-        let y, m, d;
-        [y, m, d] = _.split(date, '-');
+        let [y, m, d] = _.split(date, '-');
         console.log(y, m+d);
         year.add(y)
         dates.add(m+d)
@@ -137,7 +136,7 @@ export default {
       // socket.emit("exchangeParams", "hello");
       let js = JSON.stringify(data);
       console.log(js)
-      let path = `http://localhost:5000/api/calenda`;
+      let path = `http://localhost:5000/api/calendar`;
       path += `?data=${js}`
       axios
         .get(path, {

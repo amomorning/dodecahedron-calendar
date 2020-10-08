@@ -16,7 +16,7 @@ def random_number():
     return jsonify(response)
 
 
-@app.route('/api/calenda')
+@app.route('/api/calendar')
 def user_calendar():
     print(request.args.get('data'))
     data = json.loads(request.args.get('data'))
