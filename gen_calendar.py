@@ -1,11 +1,14 @@
 import calendar
 import ezdxf
+import io
 import json
+import numpy as np
+import time
+
 import matplotlib.pyplot as plt
 import matplotlib
-import numpy as np
 from matplotlib.patches import Polygon
-import time
+from matplotlib.backends.backend_pdf import PdfPages
 
 def dxf_init():
     doc = ezdxf.readfile("template.dxf")
@@ -64,16 +67,15 @@ def plot_calendar(ax, dxf_polys, dx=0, dy=0, ro=0):
 
 def gen_calendar(
     style = 'double',
-    maincolor = '#E1ECF4',
-    backcolor='#FFFFFF',
-    percolor = '#E45C18'):
+    maincolor = '#E1ECF4FF',
+    backcolor='#FFFFFFFF',
+    percolor = '#E45C18FF'):
     inner_up, inner_down, dot, outer = dxf_init()
     fig = plt.figure(figsize=(24, 18))
     ax = fig.add_subplot(1, 1, 1)
     plot_polyline(ax, outer, 'gray', '-')
     plot_polyline(ax, dot, 'gray', ':')
-    year = 2020
-    cnt = 1
+
     plot_calendar(ax, inner_up, 0, 3.6, 0)
     plot_calendar(ax, inner_down, 0, 4.4, 180)
 
@@ -92,11 +94,17 @@ def gen_calendar(
 
 
     plt.axis('off')
-    fig.savefig("tmp.pdf", bbox_inches='tight')
-    print("finish")
+    pdfio = io.BytesIO()
+    with PdfPages(pdfio) as pdf:
+        fig.savefig(pdf, format="pdf", bbox_inches='tight')
+        pass
+    return pdfio.getvalue()
+    
 
 
 
 if  __name__ == '__main__':
+    year = 2020
+    cnt = 1
     gen_calendar()
     plt.show()

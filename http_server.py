@@ -20,8 +20,10 @@ def user_calendar():
     try:
         gen_calendar.cnt = 1
         gen_calendar.year = 2020
-        gen_calendar.gen_calendar()
-        return send_file('./tmp.pdf', as_attachment=True, cache_timeout=0)
+        print("new")
+        return gen_calendar.gen_calendar()
+
+        # return send_file('./tmp.pdf', as_attachment=True, cache_timeout=0)
     except Exception as e:
         return str(e)
 
