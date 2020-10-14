@@ -18,9 +18,14 @@ def dxf_init():
     inner_down = msp.query('POLYLINE[layer=="inner_down"]')  
     dot = msp.query('POLYLINE[layer=="dot"]')  
     outer = msp.query('POLYLINE[layer=="outer"]')
-    
 
     return inner_up, inner_down, dot, outer
+
+def dxf_calendar():
+    doc = ezdxf.new('R12', setup=True)
+    global cnt, year
+    for o in dxf_polys:
+        u = get_center(o)
 
 
 def get_center(dxf_poly):
@@ -69,14 +74,15 @@ def gen_calendar(
     style = 'doubled',
     maincolor = '#C7D3DD',
     percolor = '#E45C18', 
-    backcolor='#EDF1F4'):
+    backcolor='#EDF1F4',
+    local = False):
     global cnt
     cnt = 1
     inner_up, inner_down, dot, outer = dxf_init()
     fig = plt.figure(figsize=(24, 18))
     ax = fig.add_subplot(1, 1, 1)
-    plot_polyline(ax, outer, 'gray', '-')
-    plot_polyline(ax, dot, 'gray', ':')
+    plot_polyline(ax, outer, 'r', '-')
+    plot_polyline(ax, dot, 'r', '--')
 
     plot_calendar(ax, inner_up, 0, 3.6, 0)
     plot_calendar(ax, inner_down, 0, 4.4, 180)
@@ -96,6 +102,9 @@ def gen_calendar(
 
 
     plt.axis('off')
+    if(local == True):
+        fig.savefig('foo.pdf', format='pdf', bbox_inches='tight')
+
     pdfio = io.BytesIO()
     with PdfPages(pdfio) as pdf:
         fig.savefig(pdf, format="pdf", bbox_inches='tight')
@@ -106,6 +115,6 @@ def gen_calendar(
 
 
 if  __name__ == '__main__':
-    year = 2020
-    gen_calendar()
+    year = 2021
+    gen_calendar(style='filled', maincolor='#FFFFFF', local=True)
     plt.show()
