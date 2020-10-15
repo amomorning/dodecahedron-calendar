@@ -1,3 +1,4 @@
+# -*- coding: UTF-8 -*-
 import calendar
 import ezdxf
 import io
@@ -52,12 +53,12 @@ def plot_polygons(ax, dxf_polys, t, color):
     
 
 
-def plot_polyline(ax, dxf_pls, c, ls):
+def plot_polyline(ax, dxf_pls, c, ls, lw=1):
     for o in dxf_pls:
         for i in range(len(o)-1):
             u = o[i].dxf.location[0:2] 
             v = o[i+1].dxf.location[0:2]
-            ax.plot([u[0], v[0]], [u[1], v[1]], c=c, ls=ls, linewidth=1)
+            ax.plot([u[0], v[0]], [u[1], v[1]], c=c, ls=ls, linewidth=lw)
 
 
 def plot_calendar(ax, dxf_polys, dx=0, dy=0, ro=0):
@@ -75,14 +76,17 @@ def gen_calendar(
     maincolor = '#C7D3DD',
     percolor = '#E45C18', 
     backcolor='#EDF1F4',
+    linecolor='k',
     local = False):
     global cnt
     cnt = 1
     inner_up, inner_down, dot, outer = dxf_init()
     fig = plt.figure(figsize=(24, 18))
+    rect = fig.patch
+    rect.set_facecolor('white')
     ax = fig.add_subplot(1, 1, 1)
-    plot_polyline(ax, outer, 'r', '-')
-    plot_polyline(ax, dot, 'r', '--')
+    plot_polyline(ax, outer, linecolor, '-', 0.1)
+    plot_polyline(ax, dot, linecolor, (0, (100, 90, 100, 90)), 0.1)
 
     plot_calendar(ax, inner_up, 0, 3.6, 0)
     plot_calendar(ax, inner_down, 0, 4.4, 180)
@@ -103,11 +107,11 @@ def gen_calendar(
 
     plt.axis('off')
     if(local == True):
-        fig.savefig('foo.pdf', format='pdf', bbox_inches='tight')
+        fig.savefig('foo.pdf', format='pdf')
 
     pdfio = io.BytesIO()
     with PdfPages(pdfio) as pdf:
-        fig.savefig(pdf, format="pdf", bbox_inches='tight')
+        fig.savefig(pdf, format="pdf")
         pass
     return pdfio.getvalue()
     
@@ -116,5 +120,6 @@ def gen_calendar(
 
 if  __name__ == '__main__':
     year = 2021
-    gen_calendar(style='filled', maincolor='#FFFFFF', local=True)
+    # gen_calendar(style='doubled', maincolor='#FFFFFF', linecolor='r', local=True)
+    gen_calendar(style='double', linecolor='r', local=True)
     plt.show()
