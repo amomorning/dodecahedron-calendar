@@ -85,8 +85,8 @@ def gen_calendar(
     rect = fig.patch
     rect.set_facecolor('white')
     ax = fig.add_subplot(1, 1, 1)
-    plot_polyline(ax, outer, linecolor, '-', 0.1)
-    plot_polyline(ax, dot, linecolor, (0, (100, 90, 100, 90)), 0.1)
+    plot_polyline(ax, outer, linecolor, '-', 0.8)
+    plot_polyline(ax, dot, linecolor, (0, (10, 9)), 0.8)
 
     plot_calendar(ax, inner_up, 0, 3.6, 0)
     plot_calendar(ax, inner_down, 0, 4.4, 180)
@@ -107,11 +107,11 @@ def gen_calendar(
 
     plt.axis('off')
     if(local == True):
-        fig.savefig('foo.pdf', format='pdf')
+        fig.savefig('foo.pdf', format='pdf', bbox_inches='tight')
 
     pdfio = io.BytesIO()
     with PdfPages(pdfio) as pdf:
-        fig.savefig(pdf, format="pdf")
+        fig.savefig(pdf, format="pdf", bbox_inches='tight')
         pass
     return pdfio.getvalue()
     
