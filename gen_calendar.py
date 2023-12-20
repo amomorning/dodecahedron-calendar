@@ -56,6 +56,7 @@ def plot_polygons(ax, dxf_polys, t, color):
 def plot_polyline(ax, dxf_pls, c, ls, lw=1):
     for o in dxf_pls:
         for i in range(len(o)-1):
+
             u = o[i].dxf.location[0:2] 
             v = o[i+1].dxf.location[0:2]
             ax.plot([u[0], v[0]], [u[1], v[1]], c=c, ls=ls, linewidth=lw)
@@ -119,7 +120,7 @@ def gen_calendar(
 
 
 if  __name__ == '__main__':
-    year = 2021
+    year = 2022
     # gen_calendar(style='doubled', maincolor='#FFFFFF', linecolor='r', local=True)
     gen_calendar(style='double', linecolor='r', local=True)
     plt.show()
