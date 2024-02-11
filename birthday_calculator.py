@@ -75,10 +75,10 @@ def yinyang_of_ganzhi(ganzhi):
     return ''.join(ret)
 
     
-date = datetime(1994, 10, 16, 9)
-ganzhi = datetime_to_ganzhi(date)
-
-print(date.year, date.month, date.day)
-print(ganzhi)
-print(wuxing_of_ganzhi(ganzhi))
-print(yinyang_of_ganzhi(ganzhi))
+if __name__ == '__main__':
+    date = datetime(1996, 12, 18, 6)
+    ganzhi = datetime_to_ganzhi(date)
+    print(date.year, date.month, date.day)
+    print(ganzhi)
+    print(wuxing_of_ganzhi(ganzhi))
+    print(yinyang_of_ganzhi(ganzhi))
