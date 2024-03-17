@@ -9,10 +9,11 @@
     "lint": "eslint . --fix --ignore-path .gitignore"
   },
   "dependencies": {
-    "@inst-aaa/archiweb-core": "^0.4.13",
+    "@inst-aaa/archiweb-core": "^0.4.15",
     "@mdi/font": "7.0.96",
     "core-js": "^3.29.0",
     "roboto-fontface": "*",
+    "three": "^0.162.0",
     "vue": "^3.2.0",
     "vue-router": "^4.0.0",
     "vuetify": "^3.0.0"

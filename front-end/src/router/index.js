@@ -2,11 +2,8 @@
 import { createRouter, createWebHistory } from 'vue-router'
 
 const routes = [
-  {
-    path: '/',
-    component: () => import('@/views/Home.vue'),
-
-  },
+  {path: '/manage', component: () => import('@/views/CalendarManage.vue')},
+  {path: '/', component: () => import('@/views/CalendarCanvas.vue')}
 ]
 
 const router = createRouter({

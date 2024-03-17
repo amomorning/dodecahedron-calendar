@@ -14,7 +14,7 @@ import App from './App.vue'
 import { createApp } from 'vue'
 
 const app = createApp(App)
-
+import Vue3DraggableResizable from 'vue3-draggable-resizable'
+app.use(Vue3DraggableResizable)
 registerPlugins(app)
-
 app.mount('#app')

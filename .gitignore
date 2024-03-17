@@ -5,3 +5,5 @@ test_*
 *3dm*
 *.dwg
 .DS_Store
+
+__pycache__
