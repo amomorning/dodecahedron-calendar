@@ -1,5 +1,5 @@
 from zhdate import ZhDate
-from datetime import datetime
+from datetime import datetime, timedelta
 
 
 def same_solar_lunar_birthday(birth_year, birth_month, birth_day):
@@ -74,11 +74,40 @@ def yinyang_of_ganzhi(ganzhi):
         ret.append('阴') if zhi_idx%2 == 1 else ret.append('阳')
     return ''.join(ret)
 
-    
-if __name__ == '__main__':
-    date = datetime(1996, 12, 18, 6)
+
+def test_datetime(year, mon, day, hour):
+    date = datetime(year, mon, day, hour)
     ganzhi = datetime_to_ganzhi(date)
     print(date.year, date.month, date.day)
     print(ganzhi)
     print(wuxing_of_ganzhi(ganzhi))
     print(yinyang_of_ganzhi(ganzhi))
+
+    
+if __name__ == '__main__':
+    year = 2030
+    start_date = datetime(year-10, 1, 1, 1)
+    end_date = datetime(year+10, 12, 31, 1)
+    delta = timedelta(hours=2)
+
+    def allzhi(ganzhi):
+        zhi = ['子', '丑', '寅', '卯', '辰', '巳', '午', '未','申', '酉', '戌', '亥']
+        # if ganzhi[0] == ganzhi[6] and ganzhi[2] == ganzhi[4] and ganzhi[1] == ganzhi[7] and ganzhi[3] == ganzhi[5]:
+        #     return True
+        for z in zhi:
+            if ganzhi.count(z) == 4 and ganzhi.count(ganzhi[0]) == 4:
+            # if ganzhi.count(z) == 4:
+                return True
+        return False
+
+    while start_date <= end_date:
+        try:
+            ganzhi = datetime_to_ganzhi(start_date)
+            if allzhi(ganzhi):
+                print(start_date, "至", start_date+delta, ": " + ganzhi)
+        except TypeError as e:
+            pass
+            # print(start_date, e)
+        start_date += delta
+
+
